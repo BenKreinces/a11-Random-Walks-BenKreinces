@@ -1,10 +1,55 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
+from random_walks import random_walks
 
+def plot_random_walks(finalPos, dim, M):
+    labels = ['x', 'y', 'z']
+    for i in range(dim):
+        plt.figure()
+        plt.hist(finalPos[:, i], bins=30, density=True)
+        plt.xlabel(labels[i])
+        plt.ylabel("Probability density")
+        plt.title(f"{dim}D Random Walk: {M} steps")
+        plt.show()
+    if dim > 1:
+        r = np.linalg.norm(finalPos, axis=1)
+        plt.figure()
+        plt.hist(r, bins=30, density=True)
+        plt.xlabel("r")
+        plt.ylabel("Probability density")
+        plt.title(f"{dim}D Random Walk: {M} steps")
+        plt.show()
+    if dim == 2:
+        plt.figure()
+        plt.hist2d(finalPos[:, 0], finalPos[:, 1], bins=30, density=True)
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title(f"2D Random Walk: {M} steps")
+        plt.colorbar(label="Probability density")
+        plt.show()
+
+# Part 1
+M = [100, 500, 1000, 5000, 10000]
+N = 10000
+deviations = []
+dim = 1
+for m in M:
+    finalPos, std = random_walks(m, N, dim)
+    plot_random_walks(finalPos, dim, m)
+    deviations.append(np.std(finalPos[:, 0]))
+plt.figure()
+plt.plot(M, deviations, 'o-', label='Simulated')
+plt.plot(M, np.sqrt(M), 'r--', label='Theoretical')
+plt.xlabel("Number of steps")
+plt.ylabel("Standard deviation")
+plt.title("1D Random Walk: Standard Deviation")
+plt.legend()
+plt.show()
+
+# Part 2
 M = 1000
-
-rng = np.random.default_rng(seed=22)
-vector = (rng.random((10, 2)) * 2 - 1) 
-norm =vector / np.linalg.norm(vector, axis=1)[:, np.newaxis]
-
-print(vector)
+N = 10000
+for dim in [2, 3]:
+    finalPos, std = random_walks(M, N, dim)
+    plot_random_walks(finalPos, dim, M)
