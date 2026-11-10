@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-rng = np.random.default_rng(seed=22)
+rng = np.random.default_rng(seed=20)
 
 def random_walks(m, NTrials, dim):
     stds = []
@@ -10,3 +10,4 @@ def random_walks(m, NTrials, dim):
     finalPos = np.sum(walks, axis=2)
     stds.append(np.std(finalPos, axis = 0))
     return finalPos, stds
+

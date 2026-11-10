@@ -9,8 +9,8 @@ def A(N=10000, M=1000, boundary=20):
     positions = []
     for i in range(N):
         x = 0
-        for j in range(M):
-            step = rng.choice([-1, 1])
+        steps = rng.choice([-1, 1], size=M)
+        for step in steps:
             if boundary is not None and x + step > boundary:
                 step = -step
             x += step
@@ -22,8 +22,8 @@ def B1(N=10000, M=1000, boundary=20):
     while len(positions) < N:
         x = 0
         absorbed = False
-        for j in range(M):
-            step = rng.choice([-1, 1])
+        steps = rng.choice([-1, 1], size=M)
+        for step in steps:
             if x + step > boundary:
                 absorbed = True
                 break
@@ -38,8 +38,8 @@ def B2(N=10000, M=1000, boundary=20):
     absorbed = 0
     for i in range(N):
         x = 0
-        for j in range(M):
-            step = rng.choice([-1, 1])
+        steps = rng.choice([-1, 1], size=M)
+        for step in steps:
             if x + step > boundary:
                 absorbed += 1
                 break
@@ -52,8 +52,8 @@ def C(N=10000, M=1000, boundary=20):
     positions = []
     for i in range(N):
         x = 0
-        for j in range(M):
-            step = rng.choice([-1, 1])
+        steps = rng.choice([-1, 1], size=M)
+        for step in steps:
             if x == boundary + 1 and step == -1:
                 step = 1
             x += step
@@ -65,8 +65,8 @@ def D(N=10000, M=1000, boundary=5, p=0.5):
     positions = []
     for i in range(N):
         x = 0
-        for j in range(M):
-            step = rng.choice([-1, 1])
+        steps = rng.choice([-1, 1], size=M)
+        for step in steps:
             if (x == boundary and step == 1) or (x == boundary + 1 and step == -1):
                 if rng.random() >= p:
                     step = -step
@@ -90,8 +90,8 @@ if __name__ == "__main__":
     plt.ylabel("Probability density")
     plt.title("Case A: Reflecting Walls")
     plt.legend()
-    plt.show()
-
+    plt.savefig("Plots/CaseA.png")
+ 
     # Case B1
     plt.figure()
     for boundary in boundaries:
@@ -102,8 +102,8 @@ if __name__ == "__main__":
     plt.ylabel("Probability density")
     plt.title("Case B1: Survivors Only")
     plt.legend()
-    plt.show()
-
+    plt.savefig("Plots/CaseB1.png")
+  
     # Case B2
     survivors = B1(N, M, 20)
     stopped, fraction = B2(N, M, 20)
@@ -117,7 +117,8 @@ if __name__ == "__main__":
     plt.ylabel("Probability")
     plt.title("Case B2: Absorbing Boundary at x = 20")
     plt.legend()
-    plt.show()
+    plt.savefig("Plots/CaseB2.png")
+
     print(f"Fraction absorbed: {fraction:.4f}")
 
     # Case C
@@ -130,7 +131,8 @@ if __name__ == "__main__":
     plt.ylabel("Probability density")
     plt.title("Case C: No-Return Cliffs")
     plt.legend()
-    plt.show()
+    plt.savefig("Plots/CaseC.png")
+  
 
     # Case D
     plt.figure()
@@ -142,4 +144,5 @@ if __name__ == "__main__":
     plt.ylabel("Probability density")
     plt.title("Case D: Tunneling Through Wall at x = 5")
     plt.legend()
+    plt.savefig("Plots/CaseD.png")
     plt.show()
